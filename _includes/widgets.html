@@ -1,0 +1,17 @@
+<div id="secondary" class="widget-area" role="complementary">
+	<aside>
+		<h3 class="widget-title">Contact me</h3>
+		<ul>
+			<li><a href="https://github.com/pcercuei">My Github</a></li>
+			<li><a href="mailto:info@zcrc.me">Email</a></li>
+		</ul>
+	</aside>
+	<aside>
+		<h3 class="widget-title">Categories</h3>
+		<ul>
+			{% for category in site.categories %}
+			<li><a href="/{{category | first}}.html">{{category | first}}</a>
+			{% endfor %}
+		</ul>
+	</aside>
+</div>

@@ -1,0 +1,35 @@
+stages:
+  - deploy
+
+image: ruby:2.3
+
+# add bundle cache to 'vendor' for speeding up builds
+cache:
+  paths:
+   - vendor/
+
+before_script:
+  - git config --global user.email "$GITLAB_USER_EMAIL"
+  - git config --global user.name "$GITLAB_USER_NAME"
+  - eval "$(ssh-agent -s)"
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - bundle install --path vendor
+
+build:
+  stage: deploy
+  script:
+   - bundle exec jekyll build -d pages/
+   - cd pages/
+   - git init .
+   - git add -A
+   - git commit -m "Autobuild from commit $CI_COMMIT_SHA"
+   - git push -f git@gitlab.com:pcercuei/zcrc.git HEAD:pages
+  artifacts:
+     paths:
+       - pages
+  only:
+   - master

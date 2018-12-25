@@ -1,0 +1,128 @@
+---
+layout: post
+title: "Linux on the Retromini"
+date: "2018-08-18 23:38:17 +0000"
+categories: [RetroMini]
+---
+<p>Time for a progress report.</p>
+<p>I successfully booted a Linux kernel on the Retromini some weeks ago.
+ I won’t paste the whole kernel boot here, but you can read it by <a href="/assets/rs90-kernel-boot.txt" target="_blank" rel="noopener noreferrer">clicking here</a>.</p>
+<p>Since then, I&quot;ve been adding support for the various hardware 
+components of the Retromini in the upstream drivers if they exist, or 
+writting new drivers otherwise.</p>
+<p>Here is a list of the hardware components, and their current state:</p>
+<table>
+<tbody>
+<tr>
+<th>UART</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>IRQ controller</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>PLL and Clocks</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not upstream</span></th>
+</tr>
+<tr>
+<th>Clocksource</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>System timer</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>Watchdog (reboot)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>PWM (backlight)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>RTC (power-off)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>Pinctrl + GPIO</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/16/418" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>DMA</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/7/287" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>SD card</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>Memory controller</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>NAND</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>BCH (error correction for NAND)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>Audio</th>
+<th><span style="color: red;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>USB Ethernet / mass storage</th>
+<th><span style="color: red;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>Buttons</th>
+<th><span style="color: #ffcc00;">Working except SELECT</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>ADC (SELECT button)</th>
+<th><span style="color: #ff0000;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>LCD</th>
+<th><span style="color: #ff0000;">Not working</span></th>
+<th></th>
+</tr>
+</tbody>
+</table>
+<p>If I find some time in the next few days, I will clean up and push on Github the current git tree I’m working on.</p>
+<p>Some things I thought I’d share:</p>
+<ul>
+<li>The JZ4725B SoC used by the Retromini is actually newer than the 
+JZ4740. Some hardware blocks are more similar to the JZ4770 than the 
+JZ4740.</li>
+<li>The RTC does not retain the date across reboots. This sucks, as I 
+won’t be able to play Pokémon games then, as they rely a lot on time. 
+Maybe a hardware modification could make it work?</li>
+<li>The buttons are for the most part GPIO-mapped. The R button is not 
+available when serial logging is enabled, is it uses the same pin as RX.
+ Also, for some reason the SELECT button is not GPIO-mapped, but 
+connected to the Analog-to-Digital Converter (ADC). Whoever thought it 
+was a good idea, should burn in hell.</li>
+</ul>
+<p>That’s all folks!</p>

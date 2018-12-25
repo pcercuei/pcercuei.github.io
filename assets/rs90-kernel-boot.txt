@@ -1,0 +1,133 @@
+[    0.000000] Linux version 4.20.0-rc6+ (paul@archimede) (gcc version 6.2.1 20160901 (Buildroot 2014.05-00206-g4d7a4d6-dirty)) #44 PREEMPT Tue Dec 25 22:29:18 CET 2018
+[    0.000000] CPU0 revision is: 1ed0024f (Ingenic JZRISC)
+[    0.000000] MIPS: machine is RetroMini
+[    0.000000] SDRAM preconfigured: bus:1 bank:2 rows:12 cols:10
+[    0.000000] Determined physical RAM map:
+[    0.000000]  memory: 02000000 @ 00000000 (usable)
+[    0.000000] earlycon: jz4740_uart0 at MMIO 0x10030000 (options '57600n8')
+[    0.000000] printk: bootconsole [jz4740_uart0] enabled
+[    0.000000] User-defined physical RAM map:
+[    0.000000]  memory: 02000000 @ 00000000 (usable)
+[    0.000000] Primary instruction cache 16kB, VIPT, 4-way, linesize 32 bytes.
+[    0.000000] Primary data cache 16kB, 4-way, VIPT, no aliases, linesize 32 bytes
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x0000000001ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x0000000001ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x0000000001ffffff]
+[    0.000000] On node 0 totalpages: 8192
+[    0.000000]   Normal zone: 64 pages used for memmap
+[    0.000000]   Normal zone: 0 pages reserved
+[    0.000000]   Normal zone: 8192 pages, LIFO batch:0
+[    0.000000] random: get_random_bytes called from start_kernel+0xa8/0x4c0 with crng_init=0
+[    0.000000] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
+[    0.000000] pcpu-alloc: [0] 0 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 8128
+[    0.000000] Kernel command line: mem=0x0020M console=ttyS0,57600 earlycon console=tty0 root=/dev/mmcblk0p1 rootfstype=vfat ro rootwait init=/mininit-syspart
+[    0.000000] Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.000000] Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+[    0.000000] Memory: 26036K/32768K available (4577K kernel code, 184K rwdata, 1224K rodata, 216K init, 108K bss, 6732K reserved, 0K cma-reserved)
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000]  Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] NR_IRQS: 222
+[    0.000000] Console: colour dummy device 80x25
+[    0.000000] printk: console [tty0] enabled
+[    0.000000] printk: bootconsole [jz4740_uart0] disabled
+[    0.000000] sched_clock: 32 bits at 100 Hz, resolution 10000000ns, wraps every 21474836475000000ns
+[    0.080000] Calibrating delay loop... 194.96 BogoMIPS (lpj=974848)
+[    0.080000] pid_max: default: 32768 minimum: 301
+[    0.080000] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.080000] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.090000] rcu: Hierarchical SRCU implementation.
+[    0.100000] devtmpfs: initialized
+[    0.120000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.120000] futex hash table entries: 256 (order: -1, 3072 bytes)
+[    0.120000] pinctrl core: initialized pinctrl subsystem
+[    0.140000] NET: Registered protocol family 16
+[    0.480000] jz4780-dma 13020000.dma: JZ4780 DMA controller initialised
+[    0.500000] jz4780-nemc 13010000.nemc: JZ4780 NEMC initialised
+[    0.760000] NET: Registered protocol family 2
+[    0.770000] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 4096 bytes)
+[    0.770000] TCP established hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.770000] TCP bind hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.770000] TCP: Hash tables configured (established 1024 bind 1024)
+[    0.770000] UDP hash table entries: 256 (order: 0, 4096 bytes)
+[    0.770000] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+[    0.780000] NET: Registered protocol family 1
+[    0.790000] workingset: timestamp_bits=30 max_order=13 bucket_order=0
+[    0.800000] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.830000] jitterentropy: Initialization failed with host not compliant with requirements: 2
+[    0.830000] io scheduler noop registered
+[    0.840000] io scheduler deadline registered (default)
+[    0.840000] io scheduler mq-deadline registered (default)
+[    0.840000] io scheduler kyber registered
+[    0.850000] Serial: 8250/16550 driver, 2 ports, IRQ sharing disabled
+[    0.870000] cacheinfo: Failed to find cpu0 device node
+[    0.880000] cacheinfo: Unable to detect cache hierarchy for CPU 0
+[    0.880000] loop: module loaded
+[    0.900000] usb_phy_generic usb_phy_generic.1.auto: usb_phy_generic.1.auto supply vcc not found, using dummy regulator
+[    0.900000] usb_phy_generic usb_phy_generic.1.auto: Linked as a consumer to regulator.0
+[    0.900000] musb-hdrc: kernel must blacklist external hubs
+[    0.920000] using random self ethernet address
+[    0.920000] using random host ethernet address
+[    0.930000] usb0: HOST MAC ba:a4:f6:39:10:4e
+[    0.930000] usb0: MAC aa:c6:87:93:c5:c8
+[    0.930000] using random self ethernet address
+[    0.930000] using random host ethernet address
+[    0.930000] g_ether gadget: Ethernet Gadget, version: Memorial Day 2008
+[    0.930000] g_ether gadget: g_ether ready
+[    0.930000] jz4740-rtc 10003000.rtc: rtc core: registered 10003000.rtc as rtc0
+[    0.950000] jz4740-mmc 10022000.mmc: Got CD GPIO
+[    0.980000] jz4740-mmc 10022000.mmc: JZ SD/MMC card driver registered
+[    0.980000] jz4740-mmc 10022000.mmc: Using DMA, 1-bit mode
+[    1.030000] NET: Registered protocol family 17
+[    1.070000] random: fast init done
+[    1.080000] Could not find a valid ONFI parameter page, trying bit-wise majority to recover it
+[    1.080000] ONFI parameter recovery failed, aborting
+[    1.080000] nand: device found, Manufacturer ID: 0xad, Chip ID: 0xda
+[    1.080000] nand: Hynix NAND 256MiB 3,3V 8-bit
+[    1.080000] nand: 256 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+[    1.080000] jz4780-nand 18000000.nand-controller: using hardware BCH (strength 8, size 512, bytes 13)
+[    1.080000] Scanning device for bad blocks
+[    1.080000] Bad eraseblock 0 at 0x000000000000
+[    1.160000] mmc0: host does not support reading read-only switch, assuming write-enable
+[    1.160000] mmc0: new high speed SDHC card at address b335
+[    1.200000] mmcblk0: mmc0:b335 SD04G 3.69 GiB 
+[    1.210000]  mmcblk0: p1
+[    1.310000] Bad eraseblock 1182 at 0x0000093c0000
+[    1.310000] Bad eraseblock 1184 at 0x000009400000
+[    1.310000] Bad eraseblock 1186 at 0x000009440000
+[    1.310000] Bad eraseblock 1188 at 0x000009480000
+[    1.790000] g_ether gadget: high-speed config #1: CDC Ethernet (ECM)
+[    2.800000] mtd mtd0: Physical block 2046 claims logical block -4 which is beyond partition end 2048
+[    2.800000] mtd mtd0: Physical block 2047 claims logical block -4 which is beyond partition end 2048
+[    2.800000] mtd mtd0: Failed to build block map
+[    2.810000] input: board:gpio-keys as /devices/platform/board/board:gpio-keys/input/input0
+[    2.820000] jz4740-rtc 10003000.rtc: setting system clock to 1970-01-01 00:49:14 UTC (2954)
+[    2.820000] clocksource: ingenic-ost: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 159271703898 ns
+[    2.820000] clocksource: Switched to clocksource ingenic-ost
+[    2.820052] sched_clock: 32 bits at 12MHz, resolution 83ns, wraps every 178956970966ns
+[    2.910743] VFS: Mounted root (vfat filesystem) readonly on device 179:1.
+[    2.987411] devtmpfs: mounted
+[    2.991195] Freeing unused kernel memory: 216K
+[    2.991393] This architecture does not have kernel memory protection.
+[    2.991537] Run /mininit-syspart as init process
+>[    3.018638] mininit: OpenDingux mininit 2.0.2
+>[    3.158781] mininit: rootfs.squashfs mounted on /root
+>[    3.175559] mininit: root switch done
+>[    3.180439] mininit: starting /sbin/init
+[    4.027280] FAT-fs (mmcblk0p1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.
+[    9.741703] random: crng init done
+
+ _________________________
+< Welcome to OpenDingux ! >
+ -------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+opendingux:/boot/local/home #

@@ -1,0 +1,42 @@
+---
+layout: post
+title: "UBIBoot on the RetroMini"
+date: "2018-07-12 11:20:18 +0000"
+categories: [RetroMini]
+---
+<p>Hello there,</p>
+<p>For those who don’t know, I had written a bootloader called UBIBoot, 
+quite a long time ago, for the Dingoo A320. As its name suggests, it 
+supported booting from a <a href="https://en.wikipedia.org/wiki/UBIFS#UBI" target="_blank">UBI</a>
+ volume on the NAND. That is to say, it was able to boot a Linux kernel 
+on the only Dingoo A320 with the internal NAND formatted as UBI: my own.
+ I trashed the native OS and was running <a href="http://www.treewalker.org/opendingux/" target="_blank">OpenDingux</a> directly on the internal NAND.</p>
+<p>The job of UBIBoot was to initialize the main <a href="https://en.wikipedia.org/wiki/PLL" target="_blank">PLL</a>,
+ the clocks, set the pins of the SoC in the right mode, initialize the 
+SDRAM, initialize the NAND, initialize the SD card controller, and then 
+finally, boot Linux from the first FAT partition of the SD card if 
+there’s one inserted, or from the “kernel” UBI drive of the internal 
+NAND.</p>
+<p>All of that in about 5 kilobytes.</p>
+<p>Before the <a href="http://www.gcw-zero.com/" target="_blank">GCW Zero</a>
+ came out, I got a prototype (with 256 MiB RAM), and ported UBIBoot to 
+it. It then became the default and official bootloader for the GCW Zero 
+when it was retailed months later.</p>
+<p>There’s a fun story about it: the GCW Zero prototype didn’t have 
+marks on the main board to show where the UART pads were, so I ported 
+UBIBoot without having any output log: instead, I was blinking the LCD. 
+My test passed? LCD turned on. It failed? The LCD remained off. Repeat 
+for everything you need to test in your code. Next time it will be 
+faster for me to learn Morse code and make the LCD blink Morse code to 
+me 🙂</p>
+<p>Anyway, I disgress. I ported UBIBoot to the RetroMini, and the code 
+is in the master branch now, which means it’s officially supported. <a href="https://github.com/pcercuei/UBIBoot" target="_blank">The code is available here</a>.</p>
+<p>Note that right now, it only supports booting from an external 
+micro-SD card. I did not try to flash it on the NAND; I want to dump the
+ NAND before starting to overwrite it with random stuff.</p>
+<p>To compile:<br>
+<code>CONFIG=rs90 make</code></p>
+<p>For the stage1 variant, where UBIBoot will only initialize the hardware then return to the USB loader:<br>
+<code> CONFIG=rs90 STAGE1_ONLY=y make</code></p>
+<p>Note that right now, it’s only useful for people with <a href="/retromini/2018/07/07/adding-uart-to-the-retromini.html" target="_blank">a UART cable soldered</a> and who want to boot their own Linux kernel (or other operating system).</p>
+<p>Next step: boot Linux!</p>

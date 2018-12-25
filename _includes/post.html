@@ -1,0 +1,11 @@
+{% capture _category %}{{post.categories | first}}{% endcapture %}
+{% capture _date %}{{post.date | date_to_string}}{% endcapture %}
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="{{post.url}}">{{post.title}}</a></h1>
+		{{post.content}}
+		<footer class="entry-meta">
+			This entry was posted in <a href="/{{_category}}.html" >{{_category}}</a> on the {{_date}}.
+		</footer>
+	</article>
+</div>
