@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://zcrc.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zcrc.me/" rel="alternate" type="text/html" /><updated>2018-12-26T13:43:59+00:00</updated><id>https://zcrc.me/feed.xml</id><title type="html">zcrc.me</title><subtitle>Peregrinations of a busy mind in the open-source world</subtitle><entry><title type="html">Linux on the Retromini</title><link href="https://zcrc.me/retromini/2018/08/18/linux-on-the-retromini.html" rel="alternate" type="text/html" title="Linux on the Retromini" /><published>2018-08-18T23:38:17+00:00</published><updated>2018-08-18T23:38:17+00:00</updated><id>https://zcrc.me/retromini/2018/08/18/linux-on-the-retromini</id><content type="html" xml:base="https://zcrc.me/retromini/2018/08/18/linux-on-the-retromini.html">&lt;p&gt;Time for a progress report.&lt;/p&gt;
+&lt;p&gt;I successfully booted a Linux kernel on the Retromini some weeks ago.
+ I won’t paste the whole kernel boot here, but you can read it by &lt;a href=&quot;/assets/rs90-kernel-boot.txt&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;clicking here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Since then, I&amp;quot;ve been adding support for the various hardware 
+components of the Retromini in the upstream drivers if they exist, or 
+writting new drivers otherwise.&lt;/p&gt;
+&lt;p&gt;Here is a list of the hardware components, and their current state:&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;UART&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;IRQ controller&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;PLL and Clocks&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: red;&quot;&gt;Not upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Clocksource&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&quot;https://lkml.org/lkml/2018/8/9/887&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Sent upstream&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;System timer&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&quot;https://lkml.org/lkml/2018/8/9/887&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Sent upstream&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Watchdog (reboot)&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&quot;https://lkml.org/lkml/2018/8/9/887&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Sent upstream&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;PWM (backlight)&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&quot;https://lkml.org/lkml/2018/8/9/887&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Sent upstream&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;RTC (power-off)&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Pinctrl + GPIO&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&quot;https://lkml.org/lkml/2018/8/16/418&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Sent upstream&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;DMA&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&quot;https://lkml.org/lkml/2018/8/7/287&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Sent upstream&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;SD card&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Memory controller&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: red;&quot;&gt;Not Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;NAND&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: red;&quot;&gt;Not Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;BCH (error correction for NAND)&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: red;&quot;&gt;Not Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Audio&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: red;&quot;&gt;Not working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;USB Ethernet / mass storage&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: red;&quot;&gt;Not working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Buttons&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: #ffcc00;&quot;&gt;Working except SELECT&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: lightgreen;&quot;&gt;Upstream&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;ADC (SELECT button)&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;Not working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;LCD&lt;/th&gt;
+&lt;th&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;Not working&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;If I find some time in the next few days, I will clean up and push on Github the current git tree I’m working on.&lt;/p&gt;
+&lt;p&gt;Some things I thought I’d share:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The JZ4725B SoC used by the Retromini is actually newer than the 
+JZ4740. Some hardware blocks are more similar to the JZ4770 than the 
+JZ4740.&lt;/li&gt;
+&lt;li&gt;The RTC does not retain the date across reboots. This sucks, as I 
+won’t be able to play Pokémon games then, as they rely a lot on time. 
+Maybe a hardware modification could make it work?&lt;/li&gt;
+&lt;li&gt;The buttons are for the most part GPIO-mapped. The R button is not 
+available when serial logging is enabled, is it uses the same pin as RX.
+ Also, for some reason the SELECT button is not GPIO-mapped, but 
+connected to the Analog-to-Digital Converter (ADC). Whoever thought it 
+was a good idea, should burn in hell.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That’s all folks!&lt;/p&gt;</content><author><name></name></author><summary type="html">Time for a progress report. I successfully booted a Linux kernel on the Retromini some weeks ago. I won’t paste the whole kernel boot here, but you can read it by clicking here. Since then, I&amp;quot;ve been adding support for the various hardware components of the Retromini in the upstream drivers if they exist, or writting new drivers otherwise. Here is a list of the hardware components, and their current state: UART Working Upstream IRQ controller Working Upstream PLL and Clocks Working Not upstream Clocksource Working Sent upstream System timer Working Sent upstream Watchdog (reboot) Working Sent upstream PWM (backlight) Working Sent upstream RTC (power-off) Working Upstream Pinctrl + GPIO Working Sent upstream DMA Working Sent upstream SD card Working Upstream Memory controller Working Not Upstream NAND Working Not Upstream BCH (error correction for NAND) Working Not Upstream Audio Not working USB Ethernet / mass storage Not working Buttons Working except SELECT Upstream ADC (SELECT button) Not working LCD Not working If I find some time in the next few days, I will clean up and push on Github the current git tree I’m working on. Some things I thought I’d share: The JZ4725B SoC used by the Retromini is actually newer than the JZ4740. Some hardware blocks are more similar to the JZ4770 than the JZ4740. The RTC does not retain the date across reboots. This sucks, as I won’t be able to play Pokémon games then, as they rely a lot on time. Maybe a hardware modification could make it work? The buttons are for the most part GPIO-mapped. The R button is not available when serial logging is enabled, is it uses the same pin as RX. Also, for some reason the SELECT button is not GPIO-mapped, but connected to the Analog-to-Digital Converter (ADC). Whoever thought it was a good idea, should burn in hell. That’s all folks!</summary></entry><entry><title type="html">UBIBoot on the RetroMini</title><link href="https://zcrc.me/retromini/2018/07/12/ubiboot-on-the-retromini.html" rel="alternate" type="text/html" title="UBIBoot on the RetroMini" /><published>2018-07-12T11:20:18+00:00</published><updated>2018-07-12T11:20:18+00:00</updated><id>https://zcrc.me/retromini/2018/07/12/ubiboot-on-the-retromini</id><content type="html" xml:base="https://zcrc.me/retromini/2018/07/12/ubiboot-on-the-retromini.html">&lt;p&gt;Hello there,&lt;/p&gt;
+&lt;p&gt;For those who don’t know, I had written a bootloader called UBIBoot, 
+quite a long time ago, for the Dingoo A320. As its name suggests, it 
+supported booting from a &lt;a href=&quot;https://en.wikipedia.org/wiki/UBIFS#UBI&quot; target=&quot;_blank&quot;&gt;UBI&lt;/a&gt;
+ volume on the NAND. That is to say, it was able to boot a Linux kernel 
+on the only Dingoo A320 with the internal NAND formatted as UBI: my own.
+ I trashed the native OS and was running &lt;a href=&quot;http://www.treewalker.org/opendingux/&quot; target=&quot;_blank&quot;&gt;OpenDingux&lt;/a&gt; directly on the internal NAND.&lt;/p&gt;
+&lt;p&gt;The job of UBIBoot was to initialize the main &lt;a href=&quot;https://en.wikipedia.org/wiki/PLL&quot; target=&quot;_blank&quot;&gt;PLL&lt;/a&gt;,
+ the clocks, set the pins of the SoC in the right mode, initialize the 
+SDRAM, initialize the NAND, initialize the SD card controller, and then 
+finally, boot Linux from the first FAT partition of the SD card if 
+there’s one inserted, or from the “kernel” UBI drive of the internal 
+NAND.&lt;/p&gt;
+&lt;p&gt;All of that in about 5 kilobytes.&lt;/p&gt;
+&lt;p&gt;Before the &lt;a href=&quot;http://www.gcw-zero.com/&quot; target=&quot;_blank&quot;&gt;GCW Zero&lt;/a&gt;
+ came out, I got a prototype (with 256 MiB RAM), and ported UBIBoot to 
+it. It then became the default and official bootloader for the GCW Zero 
+when it was retailed months later.&lt;/p&gt;
+&lt;p&gt;There’s a fun story about it: the GCW Zero prototype didn’t have 
+marks on the main board to show where the UART pads were, so I ported 
+UBIBoot without having any output log: instead, I was blinking the LCD. 
+My test passed? LCD turned on. It failed? The LCD remained off. Repeat 
+for everything you need to test in your code. Next time it will be 
+faster for me to learn Morse code and make the LCD blink Morse code to 
+me 🙂&lt;/p&gt;
+&lt;p&gt;Anyway, I disgress. I ported UBIBoot to the RetroMini, and the code 
+is in the master branch now, which means it’s officially supported. &lt;a href=&quot;https://github.com/pcercuei/UBIBoot&quot; target=&quot;_blank&quot;&gt;The code is available here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Note that right now, it only supports booting from an external 
+micro-SD card. I did not try to flash it on the NAND; I want to dump the
+ NAND before starting to overwrite it with random stuff.&lt;/p&gt;
+&lt;p&gt;To compile:&lt;br&gt;
+&lt;code&gt;CONFIG=rs90 make&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;For the stage1 variant, where UBIBoot will only initialize the hardware then return to the USB loader:&lt;br&gt;
+&lt;code&gt; CONFIG=rs90 STAGE1_ONLY=y make&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Note that right now, it’s only useful for people with &lt;a href=&quot;/retromini/2018/07/07/adding-uart-to-the-retromini.html&quot; target=&quot;_blank&quot;&gt;a UART cable soldered&lt;/a&gt; and who want to boot their own Linux kernel (or other operating system).&lt;/p&gt;
+&lt;p&gt;Next step: boot Linux!&lt;/p&gt;</content><author><name></name></author><summary type="html">Hello there, For those who don’t know, I had written a bootloader called UBIBoot, quite a long time ago, for the Dingoo A320. As its name suggests, it supported booting from a UBI volume on the NAND. That is to say, it was able to boot a Linux kernel on the only Dingoo A320 with the internal NAND formatted as UBI: my own. I trashed the native OS and was running OpenDingux directly on the internal NAND. The job of UBIBoot was to initialize the main PLL, the clocks, set the pins of the SoC in the right mode, initialize the SDRAM, initialize the NAND, initialize the SD card controller, and then finally, boot Linux from the first FAT partition of the SD card if there’s one inserted, or from the “kernel” UBI drive of the internal NAND. All of that in about 5 kilobytes. Before the GCW Zero came out, I got a prototype (with 256 MiB RAM), and ported UBIBoot to it. It then became the default and official bootloader for the GCW Zero when it was retailed months later. There’s a fun story about it: the GCW Zero prototype didn’t have marks on the main board to show where the UART pads were, so I ported UBIBoot without having any output log: instead, I was blinking the LCD. My test passed? LCD turned on. It failed? The LCD remained off. Repeat for everything you need to test in your code. Next time it will be faster for me to learn Morse code and make the LCD blink Morse code to me 🙂 Anyway, I disgress. I ported UBIBoot to the RetroMini, and the code is in the master branch now, which means it’s officially supported. The code is available here. Note that right now, it only supports booting from an external micro-SD card. I did not try to flash it on the NAND; I want to dump the NAND before starting to overwrite it with random stuff. To compile: CONFIG=rs90 make For the stage1 variant, where UBIBoot will only initialize the hardware then return to the USB loader: CONFIG=rs90 STAGE1_ONLY=y make Note that right now, it’s only useful for people with a UART cable soldered and who want to boot their own Linux kernel (or other operating system). Next step: boot Linux!</summary></entry><entry><title type="html">Adding UART to the RetroMini</title><link href="https://zcrc.me/retromini/2018/07/07/adding-uart-to-the-retromini.html" rel="alternate" type="text/html" title="Adding UART to the RetroMini" /><published>2018-07-07T13:44:01+00:00</published><updated>2018-07-07T13:44:01+00:00</updated><id>https://zcrc.me/retromini/2018/07/07/adding-uart-to-the-retromini</id><content type="html" xml:base="https://zcrc.me/retromini/2018/07/07/adding-uart-to-the-retromini.html">&lt;p&gt;I recently bought a RetroMini.&lt;/p&gt;
+&lt;p&gt;For those who don’t know, the Retromini is a cheap ($25) chinese handheld gaming console, like there exist hundreds of variants.&lt;/p&gt;
+&lt;p&gt;What sets it apart, in my opinion, is that it’s perfectly tailored 
+for emulating GameBoy and GameBoy Advance games. The D-pad and face 
+buttons are the best ones I’ve seen since the original GameBoy, and the 
+screen is beautiful (I heard it’s actually the exact same screen as in 
+the GBA Micro). The shape is also perfect, I don’t get cramps playing, 
+which I had on the original GBA. The sound is good, the device is small 
+enough to fit in a pocket (size of a GameBoy Pocket more or less). The 
+only critic I have is for the L/R buttons, which are microswitches, and 
+awkward to use. But I can live with that, I’d mostly play Pokémon anyway
+ 🙂&lt;/p&gt;
+&lt;p&gt;Besides, the reason I bought it isn’t really for playing GBA games, 
+but because its System-on-chip (SoC), the central piece containing the 
+processor and the device controllers, is an old Ingenic JZ4725B. I’ve 
+been playing with the JZ4740 on the Dingoo A320, the JZ4770 on the GCW 
+Zero, and the JZ4780 on the MIPS Creator CI20, trying to upstream 
+support for this SoC into the Linux kernel. Owning the RetroMini means I
+ can test the drivers I write to one more Ingenic SoC, and start to 
+support it upstream.&lt;/p&gt;
+&lt;p&gt;To write code for the RetroMini, I need two things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a way to load my code into the RAM and have the CPU execute it;&lt;/li&gt;
+&lt;li&gt;a way to see what my code is actually doing.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h2&gt;Loading the code&lt;/h2&gt;
+&lt;p&gt;Point 1). is easy; by powering ON the RetroMini while pressing B, the
+ CPU will switch into a special mode where it will listen for commands 
+on the USB bus. By sending specially crafted commands, it is possible to
+ load custom code to the RetroMini. To make the process easier, I wrote a
+ tool called&amp;nbsp;&lt;a href=&quot;https://github.com/opendingux/jzboot&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;jzboot&lt;/a&gt; that will upload the code to the RetroMini.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h2&gt;Debugging the code via UART&lt;/h2&gt;
+&lt;p&gt;The simplest way to debug your code is to just make it print stuff to
+ the output console. Print register contents, print “success” if your 
+check worked, print “oh noes” if it failed… If your program outputs text
+ to the console, the whole process of writing a program becomes much 
+easier.&lt;/p&gt;
+&lt;p&gt;The problem is getting the text output.&lt;/p&gt;
+&lt;p&gt;When you load code to the RetroMini, its hardware is in an 
+uninitialized state; the RAM won’t work, the micro SD won’t work, and 
+the LCD won’t work. This means that unless you write code to initialize 
+it, you won’t be able to display text on the LCD. Thanksfully, there is 
+another way, called &lt;a href=&quot;https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter&quot; target=&quot;_blank&quot;&gt;UART&lt;/a&gt;.
+ By connecting the TX and RX pins of the UART of the SoC&amp;nbsp; to an 
+external UART receiver, we can receive on a PC the output of our 
+program.&lt;/p&gt;
+&lt;p&gt;By looking at &lt;a href=&quot;/assets/JZ4725B_DS.pdf&quot;&gt;the datasheet&lt;/a&gt; (section 2.3.2) I could deduce that the &lt;strong&gt;TX&lt;/strong&gt; pin was the pin number &lt;strong&gt;58&lt;/strong&gt;, and the &lt;strong&gt;RX&lt;/strong&gt; pin was the pin number &lt;strong&gt;57&lt;/strong&gt;.
+ Following closely the traces on the PCB (with a multimeter), I ended up
+ soldering wires to the following points (click to enlarge):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/rs90_uart_pads.jpg&quot;&gt;&lt;/p&gt;
+&lt;p&gt;You should connect these pins to a UART-to-USB adapter. Search for &lt;strong&gt;FTDI&lt;/strong&gt; on your favourite online store. Here is an example: &lt;a href=&quot;https://www.ebay.com/itm/FT232RL-FTDI-USB-3-3V-5-5V-to-TTL-Serial-Adapter-Module-for-Arduino-Mini-Port/222721031019?epid=1983299799&amp;amp;hash=item33db353b6b:g:vdoAAOSwEZdaDLpc&quot; target=&quot;_blank&quot;&gt;UART to USB adapter&lt;/a&gt;.
+ The important thing is that it should work in 3.3V. Most of these 
+modules come with a jumper to toggle between 5V and 3.3V I/O, it must be
+ set to 3.3V if you don’t want to toast your RetroMini.&lt;/p&gt;
+&lt;p&gt;Then, solder the PCB’s &lt;strong&gt;TX&lt;/strong&gt; to the adapter’s &lt;strong&gt;RX&lt;/strong&gt;, the PCB’s &lt;strong&gt;RX&lt;/strong&gt; to the adapter’s &lt;strong&gt;TX&lt;/strong&gt;, and the two &lt;strong&gt;GND&lt;/strong&gt; points together.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h2&gt;Making the RetroMini more retro&lt;/h2&gt;
+&lt;p&gt;I didn’t want to solder my UART-to-USB module directly on the PCB, it
+ wouldn’t look good and wouldn’t be practical should I want to actually 
+play on the RetroMini. So I just drilled a hole on the back of the case 
+and put a SUBD-9 connector there, the “official” connector for UART:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/rs90_uart_subd9.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/rs90_uart_subd9_debug.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Looks good right? 😉&lt;/p&gt;
+&lt;p&gt;Next step: write some code!&lt;/p&gt;</content><author><name></name></author><summary type="html">I recently bought a RetroMini. For those who don’t know, the Retromini is a cheap ($25) chinese handheld gaming console, like there exist hundreds of variants. What sets it apart, in my opinion, is that it’s perfectly tailored for emulating GameBoy and GameBoy Advance games. The D-pad and face buttons are the best ones I’ve seen since the original GameBoy, and the screen is beautiful (I heard it’s actually the exact same screen as in the GBA Micro). The shape is also perfect, I don’t get cramps playing, which I had on the original GBA. The sound is good, the device is small enough to fit in a pocket (size of a GameBoy Pocket more or less). The only critic I have is for the L/R buttons, which are microswitches, and awkward to use. But I can live with that, I’d mostly play Pokémon anyway 🙂 Besides, the reason I bought it isn’t really for playing GBA games, but because its System-on-chip (SoC), the central piece containing the processor and the device controllers, is an old Ingenic JZ4725B. I’ve been playing with the JZ4740 on the Dingoo A320, the JZ4770 on the GCW Zero, and the JZ4780 on the MIPS Creator CI20, trying to upstream support for this SoC into the Linux kernel. Owning the RetroMini means I can test the drivers I write to one more Ingenic SoC, and start to support it upstream. To write code for the RetroMini, I need two things: a way to load my code into the RAM and have the CPU execute it; a way to see what my code is actually doing. &amp;nbsp; Loading the code Point 1). is easy; by powering ON the RetroMini while pressing B, the CPU will switch into a special mode where it will listen for commands on the USB bus. By sending specially crafted commands, it is possible to load custom code to the RetroMini. To make the process easier, I wrote a tool called&amp;nbsp;jzboot that will upload the code to the RetroMini. &amp;nbsp; Debugging the code via UART The simplest way to debug your code is to just make it print stuff to the output console. Print register contents, print “success” if your check worked, print “oh noes” if it failed… If your program outputs text to the console, the whole process of writing a program becomes much easier. The problem is getting the text output. When you load code to the RetroMini, its hardware is in an uninitialized state; the RAM won’t work, the micro SD won’t work, and the LCD won’t work. This means that unless you write code to initialize it, you won’t be able to display text on the LCD. Thanksfully, there is another way, called UART. By connecting the TX and RX pins of the UART of the SoC&amp;nbsp; to an external UART receiver, we can receive on a PC the output of our program. By looking at the datasheet (section 2.3.2) I could deduce that the TX pin was the pin number 58, and the RX pin was the pin number 57. Following closely the traces on the PCB (with a multimeter), I ended up soldering wires to the following points (click to enlarge): You should connect these pins to a UART-to-USB adapter. Search for FTDI on your favourite online store. Here is an example: UART to USB adapter. The important thing is that it should work in 3.3V. Most of these modules come with a jumper to toggle between 5V and 3.3V I/O, it must be set to 3.3V if you don’t want to toast your RetroMini. Then, solder the PCB’s TX to the adapter’s RX, the PCB’s RX to the adapter’s TX, and the two GND points together. &amp;nbsp; Making the RetroMini more retro I didn’t want to solder my UART-to-USB module directly on the PCB, it wouldn’t look good and wouldn’t be practical should I want to actually play on the RetroMini. So I just drilled a hole on the back of the case and put a SUBD-9 connector there, the “official” connector for UART: Looks good right? 😉 Next step: write some code!</summary></entry><entry><title type="html">Hello World!</title><link href="https://zcrc.me/misc/2018/07/04/hello-world.html" rel="alternate" type="text/html" title="Hello World!" /><published>2018-07-04T10:52:26+00:00</published><updated>2018-07-04T10:52:26+00:00</updated><id>https://zcrc.me/misc/2018/07/04/hello-world</id><content type="html" xml:base="https://zcrc.me/misc/2018/07/04/hello-world.html">&lt;p&gt;Welcome to my devblog!&lt;/p&gt;
+&lt;p&gt;I’ve been thinking for some time about starting it; not that I like 
+much to write about what I do, but I’ve been hacking some pretty amazing
+ stuff, and won decent knowledge about programming languages, 
+electronics, low-level magic, operating systems and device drivers 
+development, Linux kernel hacking, dynamic code recompilation… that it 
+would be sad not to write about my experience and my experiments as I 
+go.&lt;/p&gt;
+&lt;p&gt;So buckle your seatbelt, we’re going for a ride into my world, and it’s going to get bumpy.&lt;/p&gt;</content><author><name></name></author><summary type="html">Welcome to my devblog! I’ve been thinking for some time about starting it; not that I like much to write about what I do, but I’ve been hacking some pretty amazing stuff, and won decent knowledge about programming languages, electronics, low-level magic, operating systems and device drivers development, Linux kernel hacking, dynamic code recompilation… that it would be sad not to write about my experience and my experiments as I go. So buckle your seatbelt, we’re going for a ride into my world, and it’s going to get bumpy.</summary></entry></feed>

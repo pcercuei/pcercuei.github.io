@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Adding UART to the RetroMini</title>
+		<link rel="stylesheet" href="/assets/css/style.css">
+	</head>
+	<body>
+		<div id="page" class="site">
+			<header id="main-header" class="site-header" role="banner">
+	<a href="/"><img src="/assets/images/zcrcme.png" class="header-image" /></a>
+	<h2 class="site-description">Peregrinations of a busy mind in the open-source world</h2>
+</header>
+
+			<div id="primary" class="site-content">
+				
+
+
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="/retromini/2018/07/07/adding-uart-to-the-retromini.html">Adding UART to the RetroMini</a></h1>
+		<p>I recently bought a RetroMini.</p>
+<p>For those who don’t know, the Retromini is a cheap ($25) chinese handheld gaming console, like there exist hundreds of variants.</p>
+<p>What sets it apart, in my opinion, is that it’s perfectly tailored 
+for emulating GameBoy and GameBoy Advance games. The D-pad and face 
+buttons are the best ones I’ve seen since the original GameBoy, and the 
+screen is beautiful (I heard it’s actually the exact same screen as in 
+the GBA Micro). The shape is also perfect, I don’t get cramps playing, 
+which I had on the original GBA. The sound is good, the device is small 
+enough to fit in a pocket (size of a GameBoy Pocket more or less). The 
+only critic I have is for the L/R buttons, which are microswitches, and 
+awkward to use. But I can live with that, I’d mostly play Pokémon anyway
+ 🙂</p>
+<p>Besides, the reason I bought it isn’t really for playing GBA games, 
+but because its System-on-chip (SoC), the central piece containing the 
+processor and the device controllers, is an old Ingenic JZ4725B. I’ve 
+been playing with the JZ4740 on the Dingoo A320, the JZ4770 on the GCW 
+Zero, and the JZ4780 on the MIPS Creator CI20, trying to upstream 
+support for this SoC into the Linux kernel. Owning the RetroMini means I
+ can test the drivers I write to one more Ingenic SoC, and start to 
+support it upstream.</p>
+<p>To write code for the RetroMini, I need two things:</p>
+<ul>
+<li>a way to load my code into the RAM and have the CPU execute it;</li>
+<li>a way to see what my code is actually doing.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>Loading the code</h2>
+<p>Point 1). is easy; by powering ON the RetroMini while pressing B, the
+ CPU will switch into a special mode where it will listen for commands 
+on the USB bus. By sending specially crafted commands, it is possible to
+ load custom code to the RetroMini. To make the process easier, I wrote a
+ tool called&nbsp;<a href="https://github.com/opendingux/jzboot" target="_blank" rel="noopener noreferrer">jzboot</a> that will upload the code to the RetroMini.</p>
+<p>&nbsp;</p>
+<h2>Debugging the code via UART</h2>
+<p>The simplest way to debug your code is to just make it print stuff to
+ the output console. Print register contents, print “success” if your 
+check worked, print “oh noes” if it failed… If your program outputs text
+ to the console, the whole process of writing a program becomes much 
+easier.</p>
+<p>The problem is getting the text output.</p>
+<p>When you load code to the RetroMini, its hardware is in an 
+uninitialized state; the RAM won’t work, the micro SD won’t work, and 
+the LCD won’t work. This means that unless you write code to initialize 
+it, you won’t be able to display text on the LCD. Thanksfully, there is 
+another way, called <a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter" target="_blank">UART</a>.
+ By connecting the TX and RX pins of the UART of the SoC&nbsp; to an 
+external UART receiver, we can receive on a PC the output of our 
+program.</p>
+<p>By looking at <a href="/assets/JZ4725B_DS.pdf">the datasheet</a> (section 2.3.2) I could deduce that the <strong>TX</strong> pin was the pin number <strong>58</strong>, and the <strong>RX</strong> pin was the pin number <strong>57</strong>.
+ Following closely the traces on the PCB (with a multimeter), I ended up
+ soldering wires to the following points (click to enlarge):</p>
+<p><img src="/assets/images/rs90_uart_pads.jpg"></p>
+<p>You should connect these pins to a UART-to-USB adapter. Search for <strong>FTDI</strong> on your favourite online store. Here is an example: <a href="https://www.ebay.com/itm/FT232RL-FTDI-USB-3-3V-5-5V-to-TTL-Serial-Adapter-Module-for-Arduino-Mini-Port/222721031019?epid=1983299799&amp;hash=item33db353b6b:g:vdoAAOSwEZdaDLpc" target="_blank">UART to USB adapter</a>.
+ The important thing is that it should work in 3.3V. Most of these 
+modules come with a jumper to toggle between 5V and 3.3V I/O, it must be
+ set to 3.3V if you don’t want to toast your RetroMini.</p>
+<p>Then, solder the PCB’s <strong>TX</strong> to the adapter’s <strong>RX</strong>, the PCB’s <strong>RX</strong> to the adapter’s <strong>TX</strong>, and the two <strong>GND</strong> points together.</p>
+<p>&nbsp;</p>
+<h2>Making the RetroMini more retro</h2>
+<p>I didn’t want to solder my UART-to-USB module directly on the PCB, it
+ wouldn’t look good and wouldn’t be practical should I want to actually 
+play on the RetroMini. So I just drilled a hole on the back of the case 
+and put a SUBD-9 connector there, the “official” connector for UART:</p>
+<p><img src="/assets/images/rs90_uart_subd9.jpg" alt=""></p>
+<p><img src="/assets/images/rs90_uart_subd9_debug.jpg" alt=""></p>
+<p>Looks good right? 😉</p>
+<p>Next step: write some code!</p>
+
+		<footer class="entry-meta">
+			This entry was posted in <a href="/RetroMini.html" >RetroMini</a> on the 07 Jul 2018.
+		</footer>
+	</article>
+</div>
+
+
+<div class="reply-form">
+	<h2 class="entry-title">Add reply</h2>
+	<form method="POST" action="https://staticman3.herokuapp.com/v3/entry/gitlab/pcercuei/zcrc/master/comments">
+		<input name="options[redirect]" type="hidden" value="https://pcercuei.gitlab.io/zcrc/">
+		<!-- e.g. "2016-01-02-this-is-a-post" -->
+		<input name="options[slug]" type="hidden" value="adding-uart-to-the-retromini">
+		<label><input name="fields[name]" type="text">Name</label>
+		<label><input name="fields[email]" type="email">E-mail</label>
+		<label><textarea name="fields[message]"></textarea>Message</label>
+
+		<button type="submit">Go!</button>
+	</form>
+</div>
+
+			</div>
+			<div id="secondary" class="widget-area" role="complementary">
+	<aside>
+		<h3 class="widget-title">Contact me</h3>
+		<ul>
+			<li><a href="https://github.com/pcercuei">My Github</a></li>
+			<li><a href="mailto:info@zcrc.me">Email</a></li>
+		</ul>
+	</aside>
+	<aside>
+		<h3 class="widget-title">Categories</h3>
+		<ul>
+			
+			<li><a href="/Misc.html">Misc</a>
+			
+			<li><a href="/RetroMini.html">RetroMini</a>
+			
+		</ul>
+	</aside>
+</div>
+
+		</div>
+	</body>
+</html>

@@ -1,0 +1,328 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>zcrc.me</title>
+		<link rel="stylesheet" href="/assets/css/style.css">
+	</head>
+	<body>
+		<div id="page" class="site">
+			<header id="main-header" class="site-header" role="banner">
+	<a href="/"><img src="/assets/images/zcrcme.png" class="header-image" /></a>
+	<h2 class="site-description">Peregrinations of a busy mind in the open-source world</h2>
+</header>
+
+			<div id="primary" class="site-content">
+				
+	
+
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="/retromini/2018/08/18/linux-on-the-retromini.html">Linux on the Retromini</a></h1>
+		<p>Time for a progress report.</p>
+<p>I successfully booted a Linux kernel on the Retromini some weeks ago.
+ I won’t paste the whole kernel boot here, but you can read it by <a href="/assets/rs90-kernel-boot.txt" target="_blank" rel="noopener noreferrer">clicking here</a>.</p>
+<p>Since then, I&quot;ve been adding support for the various hardware 
+components of the Retromini in the upstream drivers if they exist, or 
+writting new drivers otherwise.</p>
+<p>Here is a list of the hardware components, and their current state:</p>
+<table>
+<tbody>
+<tr>
+<th>UART</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>IRQ controller</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>PLL and Clocks</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not upstream</span></th>
+</tr>
+<tr>
+<th>Clocksource</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>System timer</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>Watchdog (reboot)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>PWM (backlight)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>RTC (power-off)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>Pinctrl + GPIO</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/16/418" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>DMA</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/7/287" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>SD card</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>Memory controller</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>NAND</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>BCH (error correction for NAND)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>Audio</th>
+<th><span style="color: red;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>USB Ethernet / mass storage</th>
+<th><span style="color: red;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>Buttons</th>
+<th><span style="color: #ffcc00;">Working except SELECT</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>ADC (SELECT button)</th>
+<th><span style="color: #ff0000;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>LCD</th>
+<th><span style="color: #ff0000;">Not working</span></th>
+<th></th>
+</tr>
+</tbody>
+</table>
+<p>If I find some time in the next few days, I will clean up and push on Github the current git tree I’m working on.</p>
+<p>Some things I thought I’d share:</p>
+<ul>
+<li>The JZ4725B SoC used by the Retromini is actually newer than the 
+JZ4740. Some hardware blocks are more similar to the JZ4770 than the 
+JZ4740.</li>
+<li>The RTC does not retain the date across reboots. This sucks, as I 
+won’t be able to play Pokémon games then, as they rely a lot on time. 
+Maybe a hardware modification could make it work?</li>
+<li>The buttons are for the most part GPIO-mapped. The R button is not 
+available when serial logging is enabled, is it uses the same pin as RX.
+ Also, for some reason the SELECT button is not GPIO-mapped, but 
+connected to the Analog-to-Digital Converter (ADC). Whoever thought it 
+was a good idea, should burn in hell.</li>
+</ul>
+<p>That’s all folks!</p>
+
+		<footer class="entry-meta">
+			This entry was posted in <a href="/RetroMini.html" >RetroMini</a> on the 18 Aug 2018.
+		</footer>
+	</article>
+</div>
+
+
+	
+
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="/retromini/2018/07/12/ubiboot-on-the-retromini.html">UBIBoot on the RetroMini</a></h1>
+		<p>Hello there,</p>
+<p>For those who don’t know, I had written a bootloader called UBIBoot, 
+quite a long time ago, for the Dingoo A320. As its name suggests, it 
+supported booting from a <a href="https://en.wikipedia.org/wiki/UBIFS#UBI" target="_blank">UBI</a>
+ volume on the NAND. That is to say, it was able to boot a Linux kernel 
+on the only Dingoo A320 with the internal NAND formatted as UBI: my own.
+ I trashed the native OS and was running <a href="http://www.treewalker.org/opendingux/" target="_blank">OpenDingux</a> directly on the internal NAND.</p>
+<p>The job of UBIBoot was to initialize the main <a href="https://en.wikipedia.org/wiki/PLL" target="_blank">PLL</a>,
+ the clocks, set the pins of the SoC in the right mode, initialize the 
+SDRAM, initialize the NAND, initialize the SD card controller, and then 
+finally, boot Linux from the first FAT partition of the SD card if 
+there’s one inserted, or from the “kernel” UBI drive of the internal 
+NAND.</p>
+<p>All of that in about 5 kilobytes.</p>
+<p>Before the <a href="http://www.gcw-zero.com/" target="_blank">GCW Zero</a>
+ came out, I got a prototype (with 256 MiB RAM), and ported UBIBoot to 
+it. It then became the default and official bootloader for the GCW Zero 
+when it was retailed months later.</p>
+<p>There’s a fun story about it: the GCW Zero prototype didn’t have 
+marks on the main board to show where the UART pads were, so I ported 
+UBIBoot without having any output log: instead, I was blinking the LCD. 
+My test passed? LCD turned on. It failed? The LCD remained off. Repeat 
+for everything you need to test in your code. Next time it will be 
+faster for me to learn Morse code and make the LCD blink Morse code to 
+me 🙂</p>
+<p>Anyway, I disgress. I ported UBIBoot to the RetroMini, and the code 
+is in the master branch now, which means it’s officially supported. <a href="https://github.com/pcercuei/UBIBoot" target="_blank">The code is available here</a>.</p>
+<p>Note that right now, it only supports booting from an external 
+micro-SD card. I did not try to flash it on the NAND; I want to dump the
+ NAND before starting to overwrite it with random stuff.</p>
+<p>To compile:<br>
+<code>CONFIG=rs90 make</code></p>
+<p>For the stage1 variant, where UBIBoot will only initialize the hardware then return to the USB loader:<br>
+<code> CONFIG=rs90 STAGE1_ONLY=y make</code></p>
+<p>Note that right now, it’s only useful for people with <a href="/retromini/2018/07/07/adding-uart-to-the-retromini.html" target="_blank">a UART cable soldered</a> and who want to boot their own Linux kernel (or other operating system).</p>
+<p>Next step: boot Linux!</p>
+
+		<footer class="entry-meta">
+			This entry was posted in <a href="/RetroMini.html" >RetroMini</a> on the 12 Jul 2018.
+		</footer>
+	</article>
+</div>
+
+
+	
+
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="/retromini/2018/07/07/adding-uart-to-the-retromini.html">Adding UART to the RetroMini</a></h1>
+		<p>I recently bought a RetroMini.</p>
+<p>For those who don’t know, the Retromini is a cheap ($25) chinese handheld gaming console, like there exist hundreds of variants.</p>
+<p>What sets it apart, in my opinion, is that it’s perfectly tailored 
+for emulating GameBoy and GameBoy Advance games. The D-pad and face 
+buttons are the best ones I’ve seen since the original GameBoy, and the 
+screen is beautiful (I heard it’s actually the exact same screen as in 
+the GBA Micro). The shape is also perfect, I don’t get cramps playing, 
+which I had on the original GBA. The sound is good, the device is small 
+enough to fit in a pocket (size of a GameBoy Pocket more or less). The 
+only critic I have is for the L/R buttons, which are microswitches, and 
+awkward to use. But I can live with that, I’d mostly play Pokémon anyway
+ 🙂</p>
+<p>Besides, the reason I bought it isn’t really for playing GBA games, 
+but because its System-on-chip (SoC), the central piece containing the 
+processor and the device controllers, is an old Ingenic JZ4725B. I’ve 
+been playing with the JZ4740 on the Dingoo A320, the JZ4770 on the GCW 
+Zero, and the JZ4780 on the MIPS Creator CI20, trying to upstream 
+support for this SoC into the Linux kernel. Owning the RetroMini means I
+ can test the drivers I write to one more Ingenic SoC, and start to 
+support it upstream.</p>
+<p>To write code for the RetroMini, I need two things:</p>
+<ul>
+<li>a way to load my code into the RAM and have the CPU execute it;</li>
+<li>a way to see what my code is actually doing.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>Loading the code</h2>
+<p>Point 1). is easy; by powering ON the RetroMini while pressing B, the
+ CPU will switch into a special mode where it will listen for commands 
+on the USB bus. By sending specially crafted commands, it is possible to
+ load custom code to the RetroMini. To make the process easier, I wrote a
+ tool called&nbsp;<a href="https://github.com/opendingux/jzboot" target="_blank" rel="noopener noreferrer">jzboot</a> that will upload the code to the RetroMini.</p>
+<p>&nbsp;</p>
+<h2>Debugging the code via UART</h2>
+<p>The simplest way to debug your code is to just make it print stuff to
+ the output console. Print register contents, print “success” if your 
+check worked, print “oh noes” if it failed… If your program outputs text
+ to the console, the whole process of writing a program becomes much 
+easier.</p>
+<p>The problem is getting the text output.</p>
+<p>When you load code to the RetroMini, its hardware is in an 
+uninitialized state; the RAM won’t work, the micro SD won’t work, and 
+the LCD won’t work. This means that unless you write code to initialize 
+it, you won’t be able to display text on the LCD. Thanksfully, there is 
+another way, called <a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter" target="_blank">UART</a>.
+ By connecting the TX and RX pins of the UART of the SoC&nbsp; to an 
+external UART receiver, we can receive on a PC the output of our 
+program.</p>
+<p>By looking at <a href="/assets/JZ4725B_DS.pdf">the datasheet</a> (section 2.3.2) I could deduce that the <strong>TX</strong> pin was the pin number <strong>58</strong>, and the <strong>RX</strong> pin was the pin number <strong>57</strong>.
+ Following closely the traces on the PCB (with a multimeter), I ended up
+ soldering wires to the following points (click to enlarge):</p>
+<p><img src="/assets/images/rs90_uart_pads.jpg"></p>
+<p>You should connect these pins to a UART-to-USB adapter. Search for <strong>FTDI</strong> on your favourite online store. Here is an example: <a href="https://www.ebay.com/itm/FT232RL-FTDI-USB-3-3V-5-5V-to-TTL-Serial-Adapter-Module-for-Arduino-Mini-Port/222721031019?epid=1983299799&amp;hash=item33db353b6b:g:vdoAAOSwEZdaDLpc" target="_blank">UART to USB adapter</a>.
+ The important thing is that it should work in 3.3V. Most of these 
+modules come with a jumper to toggle between 5V and 3.3V I/O, it must be
+ set to 3.3V if you don’t want to toast your RetroMini.</p>
+<p>Then, solder the PCB’s <strong>TX</strong> to the adapter’s <strong>RX</strong>, the PCB’s <strong>RX</strong> to the adapter’s <strong>TX</strong>, and the two <strong>GND</strong> points together.</p>
+<p>&nbsp;</p>
+<h2>Making the RetroMini more retro</h2>
+<p>I didn’t want to solder my UART-to-USB module directly on the PCB, it
+ wouldn’t look good and wouldn’t be practical should I want to actually 
+play on the RetroMini. So I just drilled a hole on the back of the case 
+and put a SUBD-9 connector there, the “official” connector for UART:</p>
+<p><img src="/assets/images/rs90_uart_subd9.jpg" alt=""></p>
+<p><img src="/assets/images/rs90_uart_subd9_debug.jpg" alt=""></p>
+<p>Looks good right? 😉</p>
+<p>Next step: write some code!</p>
+
+		<footer class="entry-meta">
+			This entry was posted in <a href="/RetroMini.html" >RetroMini</a> on the 07 Jul 2018.
+		</footer>
+	</article>
+</div>
+
+
+	
+
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="/misc/2018/07/04/hello-world.html">Hello World!</a></h1>
+		<p>Welcome to my devblog!</p>
+<p>I’ve been thinking for some time about starting it; not that I like 
+much to write about what I do, but I’ve been hacking some pretty amazing
+ stuff, and won decent knowledge about programming languages, 
+electronics, low-level magic, operating systems and device drivers 
+development, Linux kernel hacking, dynamic code recompilation… that it 
+would be sad not to write about my experience and my experiments as I 
+go.</p>
+<p>So buckle your seatbelt, we’re going for a ride into my world, and it’s going to get bumpy.</p>
+
+		<footer class="entry-meta">
+			This entry was posted in <a href="/Misc.html" >Misc</a> on the 04 Jul 2018.
+		</footer>
+	</article>
+</div>
+
+
+
+			</div>
+			<div id="secondary" class="widget-area" role="complementary">
+	<aside>
+		<h3 class="widget-title">Contact me</h3>
+		<ul>
+			<li><a href="https://github.com/pcercuei">My Github</a></li>
+			<li><a href="mailto:info@zcrc.me">Email</a></li>
+		</ul>
+	</aside>
+	<aside>
+		<h3 class="widget-title">Categories</h3>
+		<ul>
+			
+			<li><a href="/Misc.html">Misc</a>
+			
+			<li><a href="/RetroMini.html">RetroMini</a>
+			
+		</ul>
+	</aside>
+</div>
+
+		</div>
+	</body>
+</html>

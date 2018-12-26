@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Linux on the Retromini</title>
+		<link rel="stylesheet" href="/assets/css/style.css">
+	</head>
+	<body>
+		<div id="page" class="site">
+			<header id="main-header" class="site-header" role="banner">
+	<a href="/"><img src="/assets/images/zcrcme.png" class="header-image" /></a>
+	<h2 class="site-description">Peregrinations of a busy mind in the open-source world</h2>
+</header>
+
+			<div id="primary" class="site-content">
+				
+
+
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="/retromini/2018/08/18/linux-on-the-retromini.html">Linux on the Retromini</a></h1>
+		<p>Time for a progress report.</p>
+<p>I successfully booted a Linux kernel on the Retromini some weeks ago.
+ I won’t paste the whole kernel boot here, but you can read it by <a href="/assets/rs90-kernel-boot.txt" target="_blank" rel="noopener noreferrer">clicking here</a>.</p>
+<p>Since then, I&quot;ve been adding support for the various hardware 
+components of the Retromini in the upstream drivers if they exist, or 
+writting new drivers otherwise.</p>
+<p>Here is a list of the hardware components, and their current state:</p>
+<table>
+<tbody>
+<tr>
+<th>UART</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>IRQ controller</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>PLL and Clocks</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not upstream</span></th>
+</tr>
+<tr>
+<th>Clocksource</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>System timer</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>Watchdog (reboot)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>PWM (backlight)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/9/887" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>RTC (power-off)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>Pinctrl + GPIO</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/16/418" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>DMA</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><a href="https://lkml.org/lkml/2018/8/7/287" target="_blank" rel="noopener noreferrer">Sent upstream</a></th>
+</tr>
+<tr>
+<th>SD card</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>Memory controller</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>NAND</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>BCH (error correction for NAND)</th>
+<th><span style="color: lightgreen;">Working</span></th>
+<th><span style="color: red;">Not Upstream</span></th>
+</tr>
+<tr>
+<th>Audio</th>
+<th><span style="color: red;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>USB Ethernet / mass storage</th>
+<th><span style="color: red;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>Buttons</th>
+<th><span style="color: #ffcc00;">Working except SELECT</span></th>
+<th><span style="color: lightgreen;">Upstream</span></th>
+</tr>
+<tr>
+<th>ADC (SELECT button)</th>
+<th><span style="color: #ff0000;">Not working</span></th>
+<th></th>
+</tr>
+<tr>
+<th>LCD</th>
+<th><span style="color: #ff0000;">Not working</span></th>
+<th></th>
+</tr>
+</tbody>
+</table>
+<p>If I find some time in the next few days, I will clean up and push on Github the current git tree I’m working on.</p>
+<p>Some things I thought I’d share:</p>
+<ul>
+<li>The JZ4725B SoC used by the Retromini is actually newer than the 
+JZ4740. Some hardware blocks are more similar to the JZ4770 than the 
+JZ4740.</li>
+<li>The RTC does not retain the date across reboots. This sucks, as I 
+won’t be able to play Pokémon games then, as they rely a lot on time. 
+Maybe a hardware modification could make it work?</li>
+<li>The buttons are for the most part GPIO-mapped. The R button is not 
+available when serial logging is enabled, is it uses the same pin as RX.
+ Also, for some reason the SELECT button is not GPIO-mapped, but 
+connected to the Analog-to-Digital Converter (ADC). Whoever thought it 
+was a good idea, should burn in hell.</li>
+</ul>
+<p>That’s all folks!</p>
+
+		<footer class="entry-meta">
+			This entry was posted in <a href="/RetroMini.html" >RetroMini</a> on the 18 Aug 2018.
+		</footer>
+	</article>
+</div>
+
+
+<div class="reply-form">
+	<h2 class="entry-title">Add reply</h2>
+	<form method="POST" action="https://staticman3.herokuapp.com/v3/entry/gitlab/pcercuei/zcrc/master/comments">
+		<input name="options[redirect]" type="hidden" value="https://pcercuei.gitlab.io/zcrc/">
+		<!-- e.g. "2016-01-02-this-is-a-post" -->
+		<input name="options[slug]" type="hidden" value="linux-on-the-retromini">
+		<label><input name="fields[name]" type="text">Name</label>
+		<label><input name="fields[email]" type="email">E-mail</label>
+		<label><textarea name="fields[message]"></textarea>Message</label>
+
+		<button type="submit">Go!</button>
+	</form>
+</div>
+
+			</div>
+			<div id="secondary" class="widget-area" role="complementary">
+	<aside>
+		<h3 class="widget-title">Contact me</h3>
+		<ul>
+			<li><a href="https://github.com/pcercuei">My Github</a></li>
+			<li><a href="mailto:info@zcrc.me">Email</a></li>
+		</ul>
+	</aside>
+	<aside>
+		<h3 class="widget-title">Categories</h3>
+		<ul>
+			
+			<li><a href="/Misc.html">Misc</a>
+			
+			<li><a href="/RetroMini.html">RetroMini</a>
+			
+		</ul>
+	</aside>
+</div>
+
+		</div>
+	</body>
+</html>

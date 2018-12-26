@@ -1,0 +1,132 @@
+html {
+	color: white;
+	font-size: 14px;
+	font-family: Helvetica, Arial, sans-serif;
+	text-rendering: optimizeLegibility;
+}
+
+body {
+	height: 100%;
+	background-color: #515151;
+	background-image: linear-gradient(transparent, rgba(0,0,0,0.65) 300px), url("/assets/images/matrix-150x150.png");
+	background-position: center center;
+	background-size: auto;
+	background-repeat: repeat;
+	background-attachment: fixed;
+}
+
+img {
+		max-width: 100%;
+		max-height: 100%;
+		height: auto;
+		width: auto;
+}
+
+h2.site-description {
+		text-shadow: 0 0 1em black, 0 0 0.2em black;
+}
+
+/* Disabled elements */
+#site-navigation,
+.site-title,
+.assistive-text {
+	display: none;
+}
+
+.site-info a,
+.site-info a:hover {
+	color: #555555;
+	text-decoration: none;
+}
+
+.site-header {
+	margin-top: 45px;
+	margin-bottom: 60px;
+}
+
+.site-description {
+	margin-left: 16px;
+}
+
+.site {
+	padding: 0 12px;
+	background-color: transparent;
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+article,
+.reply-form,
+.widget-area {
+	padding: 30px 30px 30px 30px;
+	border: 5px solid white;
+	border-radius: 30px;
+	background-color: black;
+	margin-bottom: 64px;
+}
+
+table {
+		border-collapse: collapse;
+}
+
+table, th, td {
+		border: 1px solid darkgrey;
+		padding: 8px;
+}
+
+footer.entry-meta,
+.comment-entry-title,
+a {
+	color: lightgreen;
+}
+
+a {
+	outline: none;
+}
+
+code,
+a:hover {
+	color: hotpink;
+}
+
+.entry-title a,
+.entry-title {
+	color: hotpink;
+	text-decoration: none;
+}
+
+@media screen and (min-width: 800px) {
+	.site {
+		overflow: hidden;
+	}
+
+	.site-content {
+		/*      160px: .widget-area width
+		 * + 2x  30px: .widget-area padding
+		 * + 2x   5px: .widget-area border
+		 * + 2x   5px: article border
+		 * +     16px: article/.widget-area margin
+		 *   ---------
+		 *      256px: total
+		 */
+		max-width: calc(100% - 256px);
+		float: left;
+	}
+
+	.widget-area {
+		width: 160px;
+		float: right;
+	}
+}
+
+@media screen and (max-width: 800px) {
+	.site {
+		padding: 0 0px;
+	}
+
+	article,
+	.widget-area {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}

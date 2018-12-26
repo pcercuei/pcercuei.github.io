@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>UBIBoot on the RetroMini</title>
+		<link rel="stylesheet" href="/assets/css/style.css">
+	</head>
+	<body>
+		<div id="page" class="site">
+			<header id="main-header" class="site-header" role="banner">
+	<a href="/"><img src="/assets/images/zcrcme.png" class="header-image" /></a>
+	<h2 class="site-description">Peregrinations of a busy mind in the open-source world</h2>
+</header>
+
+			<div id="primary" class="site-content">
+				
+
+
+<div class="main">
+	<article>
+		<h1 class="entry-title"><a href="/retromini/2018/07/12/ubiboot-on-the-retromini.html">UBIBoot on the RetroMini</a></h1>
+		<p>Hello there,</p>
+<p>For those who don’t know, I had written a bootloader called UBIBoot, 
+quite a long time ago, for the Dingoo A320. As its name suggests, it 
+supported booting from a <a href="https://en.wikipedia.org/wiki/UBIFS#UBI" target="_blank">UBI</a>
+ volume on the NAND. That is to say, it was able to boot a Linux kernel 
+on the only Dingoo A320 with the internal NAND formatted as UBI: my own.
+ I trashed the native OS and was running <a href="http://www.treewalker.org/opendingux/" target="_blank">OpenDingux</a> directly on the internal NAND.</p>
+<p>The job of UBIBoot was to initialize the main <a href="https://en.wikipedia.org/wiki/PLL" target="_blank">PLL</a>,
+ the clocks, set the pins of the SoC in the right mode, initialize the 
+SDRAM, initialize the NAND, initialize the SD card controller, and then 
+finally, boot Linux from the first FAT partition of the SD card if 
+there’s one inserted, or from the “kernel” UBI drive of the internal 
+NAND.</p>
+<p>All of that in about 5 kilobytes.</p>
+<p>Before the <a href="http://www.gcw-zero.com/" target="_blank">GCW Zero</a>
+ came out, I got a prototype (with 256 MiB RAM), and ported UBIBoot to 
+it. It then became the default and official bootloader for the GCW Zero 
+when it was retailed months later.</p>
+<p>There’s a fun story about it: the GCW Zero prototype didn’t have 
+marks on the main board to show where the UART pads were, so I ported 
+UBIBoot without having any output log: instead, I was blinking the LCD. 
+My test passed? LCD turned on. It failed? The LCD remained off. Repeat 
+for everything you need to test in your code. Next time it will be 
+faster for me to learn Morse code and make the LCD blink Morse code to 
+me 🙂</p>
+<p>Anyway, I disgress. I ported UBIBoot to the RetroMini, and the code 
+is in the master branch now, which means it’s officially supported. <a href="https://github.com/pcercuei/UBIBoot" target="_blank">The code is available here</a>.</p>
+<p>Note that right now, it only supports booting from an external 
+micro-SD card. I did not try to flash it on the NAND; I want to dump the
+ NAND before starting to overwrite it with random stuff.</p>
+<p>To compile:<br>
+<code>CONFIG=rs90 make</code></p>
+<p>For the stage1 variant, where UBIBoot will only initialize the hardware then return to the USB loader:<br>
+<code> CONFIG=rs90 STAGE1_ONLY=y make</code></p>
+<p>Note that right now, it’s only useful for people with <a href="/retromini/2018/07/07/adding-uart-to-the-retromini.html" target="_blank">a UART cable soldered</a> and who want to boot their own Linux kernel (or other operating system).</p>
+<p>Next step: boot Linux!</p>
+
+		<footer class="entry-meta">
+			This entry was posted in <a href="/RetroMini.html" >RetroMini</a> on the 12 Jul 2018.
+		</footer>
+	</article>
+</div>
+
+
+<div class="reply-form">
+	<h2 class="entry-title">Add reply</h2>
+	<form method="POST" action="https://staticman3.herokuapp.com/v3/entry/gitlab/pcercuei/zcrc/master/comments">
+		<input name="options[redirect]" type="hidden" value="https://pcercuei.gitlab.io/zcrc/">
+		<!-- e.g. "2016-01-02-this-is-a-post" -->
+		<input name="options[slug]" type="hidden" value="ubiboot-on-the-retromini">
+		<label><input name="fields[name]" type="text">Name</label>
+		<label><input name="fields[email]" type="email">E-mail</label>
+		<label><textarea name="fields[message]"></textarea>Message</label>
+
+		<button type="submit">Go!</button>
+	</form>
+</div>
+
+			</div>
+			<div id="secondary" class="widget-area" role="complementary">
+	<aside>
+		<h3 class="widget-title">Contact me</h3>
+		<ul>
+			<li><a href="https://github.com/pcercuei">My Github</a></li>
+			<li><a href="mailto:info@zcrc.me">Email</a></li>
+		</ul>
+	</aside>
+	<aside>
+		<h3 class="widget-title">Categories</h3>
+		<ul>
+			
+			<li><a href="/Misc.html">Misc</a>
+			
+			<li><a href="/RetroMini.html">RetroMini</a>
+			
+		</ul>
+	</aside>
+</div>
+
+		</div>
+	</body>
+</html>
